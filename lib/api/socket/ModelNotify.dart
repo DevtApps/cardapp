@@ -1,0 +1,3 @@
+class ModelNotify{
+  var notify;
+}

@@ -1,0 +1,3 @@
+class ModelPainel {
+  var update;
+}

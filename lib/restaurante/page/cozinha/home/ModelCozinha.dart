@@ -1,0 +1,3 @@
+class ModelCozinha {
+  var pedido;
+}
