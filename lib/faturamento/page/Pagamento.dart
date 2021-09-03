@@ -15,10 +15,10 @@ class _PagamentoState extends State<Pagamento> {
 
   FaturamentoController controller = FaturamentoController();
 
-  var nome = "";
-  var link = "";
-  var teste = 0;
-  var dias = 0;
+  String? nome = "";
+  String? link = "";
+  int? teste = 0;
+  int? dias = 0;
 
   @override
   initState() {
@@ -88,7 +88,7 @@ class _PagamentoState extends State<Pagamento> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Center(
-                      child: nome.length == 0 || loading
+                      child: nome!.length == 0 || loading
                           ? Shimmer.fromColors(
                               baseColor: Colors.white12,
                               highlightColor: Colors.white70,
@@ -111,14 +111,14 @@ class _PagamentoState extends State<Pagamento> {
                               ),
                             )
                           : Text(
-                              nome,
+                              nome!,
                               style: TextStyle(
                                   fontFamily: "Poppins",
                                   fontSize: size.width * 0.06),
                             ),
                     ),
                     Center(
-                        child: nome.length == 0 || loading
+                        child: nome!.length == 0 || loading
                             ? Shimmer.fromColors(
                                 baseColor: Colors.white12,
                                 highlightColor: Colors.white70,
@@ -143,7 +143,7 @@ class _PagamentoState extends State<Pagamento> {
                                         : size.width * 0.08,
                                     color: Colors.white))),
                     Center(
-                      child: nome.length == 0 || loading
+                      child: nome!.length == 0 || loading
                           ? Shimmer.fromColors(
                               baseColor: Colors.white12,
                               highlightColor: Colors.white70,
@@ -186,7 +186,7 @@ class _PagamentoState extends State<Pagamento> {
                       CircularProgressIndicator(value: null)
                     ],
                   ))
-                : nome.length == 0
+                : nome!.length == 0
                     ? Center(
                         child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
@@ -222,10 +222,10 @@ class _PagamentoState extends State<Pagamento> {
                           children: [
                             ListTile(
                                 title: Text("Débitos"),
-                                tileColor: link.length > 0
+                                tileColor: link!.length > 0
                                     ? Colors.yellow
                                     : Colors.transparent,
-                                trailing: link.length > 0
+                                trailing: link!.length > 0
                                     ? FlatButton(
                                         child: Text("Pagar"),
                                         onPressed: () async {

@@ -30,7 +30,7 @@ abstract class EntregasModel extends State<EntregasView> {
     var total = 0.0;
 
     for (var item in pedidos) {
-      total += item.quantidade * item.produto.preco;
+      total += item.quantidade! * item.produto!.preco!;
     }
     total += tax;
     return currency.format(total);

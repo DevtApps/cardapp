@@ -5,6 +5,8 @@ import 'package:cardapio/usuario/page/home/resume/ResumeDeliveryModel.dart';
 import 'package:flutter/material.dart';
 import 'package:stripe_payment/stripe_payment.dart';
 
+import 'ResumeArgs.dart';
+
 class ResumeDeliveryView extends StatefulWidget {
   @override
   _ResumeDeliveryViewState createState() => _ResumeDeliveryViewState();
@@ -13,7 +15,7 @@ class ResumeDeliveryView extends StatefulWidget {
 class _ResumeDeliveryViewState extends ResumeDeliveryModel {
   @override
   Widget build(BuildContext context) {
-    args = ModalRoute.of(context).settings.arguments;
+    args = ModalRoute.of(context)!.settings.arguments as ResumeArgs?;
     Size size = MediaQuery.of(context).size;
     return Scaffold(
       appBar: AppBar(
@@ -53,7 +55,7 @@ class _ResumeDeliveryViewState extends ResumeDeliveryModel {
                               alignment: Alignment.centerRight,
                               child: Text(
                                 endereco != null
-                                    ? endereco.formatted
+                                    ? endereco!.formatted
                                     : "Selecionar",
                                 overflow: TextOverflow.ellipsis,
                                 maxLines: 1,
@@ -170,22 +172,22 @@ class _ResumeDeliveryViewState extends ResumeDeliveryModel {
                 child: Container(
                   padding: EdgeInsets.all(16),
                   child: Column(
-                      children: List.generate(args.pedidos.length, (index) {
-                    PedidoDelivery pedido = args.pedidos[index];
+                      children: List.generate(args!.pedidos.length, (index) {
+                    PedidoDelivery pedido = args!.pedidos[index];
 
                     return Container(
                       child: Column(
                         children: [
                           Container(
                             child: Text(
-                              pedido.produto.nome,
+                              pedido.produto!.nome!,
                               style: TextStyle(
                                 fontWeight: FontWeight.bold,
                               ),
                             ),
                           ),
                           Visibility(
-                            visible: pedido.observacao.length > 0,
+                            visible: pedido.observacao!.length > 0,
                             child: Container(
                               margin: EdgeInsets.only(top: 8),
                               child: Row(
@@ -196,7 +198,7 @@ class _ResumeDeliveryViewState extends ResumeDeliveryModel {
                                     ),
                                   ),
                                   Text(
-                                    pedido.observacao,
+                                    pedido.observacao!,
                                     overflow: TextOverflow.ellipsis,
                                     softWrap: true,
                                     maxLines: 2,
@@ -230,7 +232,7 @@ class _ResumeDeliveryViewState extends ResumeDeliveryModel {
                                   ),
                                 ),
                                 Text(
-                                  "${currency.format(pedido.produto.preco)}",
+                                  "${currency.format(pedido.produto!.preco)}",
                                 )
                               ],
                             ),
@@ -248,7 +250,7 @@ class _ResumeDeliveryViewState extends ResumeDeliveryModel {
                                   ),
                                 ),
                                 Text(
-                                  "${currency.format(pedido.quantidade * pedido.produto.preco)}",
+                                  "${currency.format(pedido.quantidade! * pedido.produto!.preco!)}",
                                   style: TextStyle(
                                     fontWeight: FontWeight.bold,
                                   ),
@@ -256,7 +258,7 @@ class _ResumeDeliveryViewState extends ResumeDeliveryModel {
                               ],
                             ),
                           ),
-                          if (index < args.pedidos.length - 1) Divider(),
+                          if (index < args!.pedidos.length - 1) Divider(),
                         ],
                       ),
                     );
@@ -287,7 +289,7 @@ class _ResumeDeliveryViewState extends ResumeDeliveryModel {
                 }
 
                 var result = await PaymentController(
-                        context, args.pedidos, endereco, cardToken, tax)
+                        context, args!.pedidos, endereco, cardToken, tax)
                     .pay();
 
                 if (result) {

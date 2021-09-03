@@ -9,7 +9,7 @@ class _WellComeState extends State<WellCome> {
 
   var margin = EdgeInsets.all(0);
   var height = 0.0;
-  Size size;
+  late Size size;
   @override
   void initState() {
     // TODO: implement initState

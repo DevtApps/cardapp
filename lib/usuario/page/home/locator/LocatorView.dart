@@ -2,7 +2,7 @@ import 'package:cardapio/usuario/page/home/locator/LocatorManager.dart';
 import 'package:cardapio/usuario/page/home/locator/LocatorModel.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:geocoder/geocoder.dart';
+
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
@@ -92,8 +92,8 @@ class _LocatorViewState extends LocatorModel {
                   height: nodeSearch.hasFocus
                       ? loading
                           ? size.height * 0.1
-                          : places.length < 5
-                              ? size.height * (places.length / 10)
+                          : places!.length < 5
+                              ? size.height * (places!.length / 10)
                               : size.height * 0.5
                       : 0,
                   child: loading
@@ -107,33 +107,33 @@ class _LocatorViewState extends LocatorModel {
                           itemBuilder: (c, i) {
                             return ListTile(
                               dense: true,
-                              title: Text(places[i].name),
+                              title: Text(places![i].name!),
                               subtitle: Text(
-                                places[i].formattedAddress,
+                                places![i].formattedAddress!,
                                 style: TextStyle(
                                     fontSize: 13, fontWeight: FontWeight.w400),
                               ),
                               onTap: () async {
-                                place = places[i];
+                                place = places![i];
                                 nodeSearch.unfocus();
                                 await controller.animateCamera(
                                   CameraUpdate.newLatLngZoom(
-                                      LatLng(places[i].geometry.location.lat,
-                                          places[i].geometry.location.lng),
+                                      LatLng(places![i].geometry!.location!.lat!,
+                                          places![i].geometry!.location!.lng!),
                                       16),
                                 );
                                 Future.delayed(Duration(milliseconds: 600), () {
                                   setState(() {
                                     setMyLocation(LatLng(
-                                        places[i].geometry.location.lat,
-                                        places[i].geometry.location.lng));
+                                        places![i].geometry!.location!.lat!,
+                                        places![i].geometry!.location!.lng!));
                                   });
                                   showSheet();
                                 });
                               },
                             );
                           },
-                          itemCount: places.length,
+                          itemCount: places!.length,
                         ),
                 ),
               ],
@@ -149,6 +149,7 @@ class _LocatorViewState extends LocatorModel {
               CameraUpdate.newLatLngZoom(
                   LatLng(position.latitude, position.longitude), 16),
             );
+            /*
             List<Address> result = await Geocoder.local
                 .findAddressesFromCoordinates(
                     Coordinates(position.latitude, position.longitude));
@@ -156,6 +157,7 @@ class _LocatorViewState extends LocatorModel {
               setMyLocation(LatLng(position.latitude, position.longitude));
             });
             askUsePosition(result.first);
+            */
           }
         },
         child: Icon(

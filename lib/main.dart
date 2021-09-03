@@ -16,13 +16,14 @@ import 'package:firebase_analytics/observer.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+
 import 'package:get_it/get_it.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:intl/intl.dart';
 import 'package:intl/locale.dart';
 import 'package:stripe_payment/stripe_payment.dart';
 
-import 'login/Login.dart';
+import 'login/LoginView.dart';
 import 'login/Registro.dart';
 import 'login/Review.dart';
 import 'restaurante/page/cozinha/home/PedidosPage.dart';
@@ -57,7 +58,7 @@ class MyApp extends StatelessWidget {
       ],
       routes: {
         "home": (context) => Home(),
-        "login": (context) => Login(),
+        "login": (context) => LoginView(),
         "registro": (context) => Registro(),
         "painel": (context) => Painel(),
         "cozinha": (context) => PedidosPage(),
@@ -67,7 +68,6 @@ class MyApp extends StatelessWidget {
         "inativo": (ctx) => Inativo(),
         "review": (ctx) => Review(),
         "home_user": (ctx) => HomeUser(),
-
         "entregador": (ctx) => EntregadorView(),
         "locator": (ctx) => LocatorView(),
         "endereco": (ctx) => EnderecoView(),

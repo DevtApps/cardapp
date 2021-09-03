@@ -25,8 +25,8 @@ class _HomeState extends State<Home> {
   FlutterSecureStorage storage = FlutterSecureStorage();
   ModelNotify modelNotify = ModelNotify();
 
-  var loading = null;
-  var type = "";
+  dynamic loading = null;
+  String? type = "";
   @override
   void initState() {
     super.initState();
@@ -172,7 +172,7 @@ class _HomeState extends State<Home> {
                   Animation<double> secondaryAnimation) {
                 return NovaMesa(context, null);
               });
-          if (res) listMesas();
+          if (res as bool) listMesas();
         },
       ),
     );

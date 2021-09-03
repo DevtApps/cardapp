@@ -21,9 +21,9 @@ class MesaController {
     return await storage.read(key: "token");
   }
 
-  novaMesa(numero, Mesa mesa) async {
+  novaMesa(numero, Mesa? mesa) async {
     try {
-      var id = "";
+      String? id = "";
       if (mesa != null) id = mesa.id;
       Response response = await http.post(Uri.parse(host),
           body: {"numero": numero, "id": id},
@@ -71,11 +71,11 @@ class MesaController {
     }
   }
 
-  novoPedido(List<Pedido> pedidos) async {
+  novoPedido(List<Pedido?> pedidos) async {
     try {
       var itens = [];
       for (var pedido in pedidos) {
-        itens.add(pedido.toJson());
+        itens.add(pedido!.toJson());
       }
       Response response = await http.post(Uri.parse("$host/pedido"),
           body: jsonEncode(itens), headers: {"token": await token()});

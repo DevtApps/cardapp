@@ -31,17 +31,17 @@ abstract class PedidosDeliveryModel extends State<PedidosDelivery> {
   getTotal(Delivery pedido) {
     var total = 0.0;
 
-    for (PedidoDelivery p in pedido.pedidos) {
-      total += p.produto.preco * p.quantidade;
+    for (PedidoDelivery p in pedido.pedidos!) {
+      total += p.produto!.preco! * p.quantidade!;
     }
-    total += pedido.tax.toDouble();
+    total += pedido.tax!.toDouble();
     return formatCurrency.format(total);
   }
 
   getStatus(Delivery pedido) {
-    var status = 4;
-    for (PedidoDelivery p in pedido.pedidos) {
-      if (p.status <= status) status = p.status;
+    int? status = 4;
+    for (PedidoDelivery p in pedido.pedidos!) {
+      if (p.status! <= status!) status = p.status;
     }
 
     return status;

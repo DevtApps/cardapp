@@ -1,12 +1,12 @@
 class DadosPessoais {
-  String sId;
-  String nome;
-  String cpf;
-  String email;
-  String account;
-  String createdAt;
-  String updatedAt;
-  String picture;
+  String? sId;
+  String? nome;
+  String? cpf;
+  String? email;
+  String? account;
+  String? createdAt;
+  String? updatedAt;
+  String? picture;
 
   DadosPessoais(
       {this.sId,

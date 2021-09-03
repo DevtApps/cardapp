@@ -24,17 +24,17 @@ class _ProdutoPageState extends State<ProdutoPage>
   FocusNode node = FocusNode();
   var mesa;
   MesaController mesaController = MesaController();
-  List<Pedido> pedidos = [];
+  List<Pedido?> pedidos = [];
   _ProdutoPageState(this.mesa);
   List<Categoria> categorys = [];
 
-  List<Produto> produtos = [];
+  List<Produto?> produtos = [];
   List<Produto> produtosAux = [];
   var filtro = [];
   GlobalKey _scaffold = new GlobalKey<ScaffoldState>();
 
   var produtoController = ProdutoController();
-  var _progress = 0.0;
+  double? _progress = 0.0;
 
   TextEditingController searchController = TextEditingController();
 
@@ -122,7 +122,7 @@ class _ProdutoPageState extends State<ProdutoPage>
   filter({list}) {
     if (list != null) {
       if (filtro.length > 0) {
-        List<Produto> aux = [];
+        List<Produto?> aux = [];
         for (var p in list) {
           if (filtro.contains(p.categoria.nome)) {
             aux.add(p);
@@ -136,7 +136,7 @@ class _ProdutoPageState extends State<ProdutoPage>
       if (filtro.length > 0) {
         List<Produto> aux = [];
         for (var p in produtosAux) {
-          if (filtro.contains(p.categoria.nome)) {
+          if (filtro.contains(p.categoria!.nome)) {
             aux.add(p);
           }
         }
@@ -153,9 +153,9 @@ class _ProdutoPageState extends State<ProdutoPage>
 
       if (text.length > 0) {
         produtos = produtosAux;
-        List<Produto> aux = [];
+        List<Produto?> aux = [];
         for (var p in produtos) {
-          if (p.nome.toLowerCase().contains(text.toLowerCase())) {
+          if (p!.nome!.toLowerCase().contains(text.toLowerCase())) {
             aux.add(p);
           }
         }
@@ -174,7 +174,7 @@ class _ProdutoPageState extends State<ProdutoPage>
 
   var show = false;
 
-  AnimationController controller;
+  AnimationController? controller;
 
   @override
   Widget build(BuildContext context) {
@@ -349,7 +349,7 @@ class _ProdutoPageState extends State<ProdutoPage>
       NumberFormat.currency(locale: "pt_BR", symbol: "R\S", decimalDigits: 2);
   Widget Item(item, ctx) {
     return TweenAnimationBuilder<double>(
-      builder: (BuildContext context, double value, Widget child) {
+      builder: (BuildContext context, double value, Widget? child) {
         return Opacity(
           opacity: value,
           child: GestureDetector(
@@ -430,9 +430,9 @@ class _ProdutoPageState extends State<ProdutoPage>
                 child: ListView.builder(
                   itemCount: pedidos.length,
                   itemBuilder: (ctx, i) {
-                    Pedido pedido = pedidos[i];
+                    Pedido pedido = pedidos[i]!;
                     return ListTile(
-                        title: Text(pedido.produto.nome),
+                        title: Text(pedido.produto!.nome!),
                         trailing: Row(
                           mainAxisSize: MainAxisSize.min,
                           children: [
@@ -443,7 +443,7 @@ class _ProdutoPageState extends State<ProdutoPage>
                                 style: TextStyle(fontSize: 16),
                               ),
                             ),
-                            pedido.observacao.length > 0
+                            pedido.observacao!.length > 0
                                 ? IconButton(
                                     icon: Icon(
                                       Icons.message,
@@ -461,7 +461,7 @@ class _ProdutoPageState extends State<ProdutoPage>
                                                       MainAxisSize.min,
                                                   children: [
                                                     Text(
-                                                      pedido.observacao,
+                                                      pedido.observacao!,
                                                       style: TextStyle(
                                                           fontSize: 18),
                                                     ),
@@ -510,7 +510,7 @@ class _ProdutoPageState extends State<ProdutoPage>
                                           fullscreenDialog: true,
                                           pageBuilder: (ctx, a1, a2) =>
                                               DialogPedido(
-                                                  pedidos[i].produto, mesa,
+                                                  pedidos[i]!.produto, mesa,
                                                   pedido: pedidos[i],
                                                   pedindo: true)));
                                   if (pedido != false) {

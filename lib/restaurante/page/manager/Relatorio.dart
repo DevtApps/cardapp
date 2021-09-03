@@ -9,12 +9,12 @@ class Relatorio extends StatefulWidget {
 }
 
 class _RelatorioState extends State<Relatorio> {
-  List<charts.Series<Cat, String>> bars = [];
-  List<charts.Series<Cat, String>> mensalBars = [];
-  List<charts.Series<Cat, String>> pie = [];
+  List<charts.Series<dynamic, String>> bars = [];
+  List<charts.Series<dynamic, String>> mensalBars = [];
+  List<charts.Series<Cat?, String?>> pie = [];
   RelatorioController controller = RelatorioController();
   var title = "HOJE";
-  var totalPedidos = 0;
+  int? totalPedidos = 0;
 
   @override
   void initState() {
@@ -33,7 +33,7 @@ class _RelatorioState extends State<Relatorio> {
 
       List<Cat> dataPie = [];
 
-      pie.add(new charts.Series<Cat, String>(
+      pie.add(new charts.Series<Cat, String?>(
         domainLowerBoundFn: (datum, index) => datum.cat,
         id: 'Categorias',
         colorFn: (_, __) => charts.MaterialPalette.blue.shadeDefault,
@@ -55,14 +55,14 @@ class _RelatorioState extends State<Relatorio> {
         });
         setState(() {
           bars = [
-            charts.Series<Cat, String>(
+            charts.Series<dynamic, String>(
               domainLowerBoundFn: (datum, index) => datum.cat,
               id: 'Pedidos',
               colorFn: (_, __) => charts.MaterialPalette.blue.shadeDefault,
-              domainFn: (Cat cat, _) => cat.cat,
-              measureFn: (Cat cat, _) => cat.qtd,
+              domainFn: (cat, _) => cat.cat,
+              measureFn: (cat, _) => cat.qtd,
               data: data,
-              labelAccessorFn: (Cat cat, a) => cat.qtd.toString(),
+              labelAccessorFn: (cat, a) => cat.qtd.toString(),
               outsideLabelStyleAccessorFn: (datum, index) =>
                   charts.TextStyleSpec(color: charts.MaterialPalette.black),
             )
@@ -76,7 +76,7 @@ class _RelatorioState extends State<Relatorio> {
         }
         setState(() {
           pie = [
-            charts.Series<Cat, String>(
+            charts.Series<Cat, String?>(
               domainLowerBoundFn: (datum, index) => datum.cat,
               id: 'Categorias',
               colorFn: (_, __) => charts.MaterialPalette.blue.shadeDefault,
@@ -103,14 +103,14 @@ class _RelatorioState extends State<Relatorio> {
         }
         setState(() {
           mensalBars = [
-            charts.Series<Cat, String>(
+            charts.Series<dynamic, String>(
               domainLowerBoundFn: (datum, index) => datum.cat,
               id: 'Categorias',
               colorFn: (_, __) => charts.MaterialPalette.blue.shadeDefault,
-              domainFn: (Cat cat, _) => cat.cat,
-              measureFn: (Cat cat, _) => cat.qtd,
+              domainFn: (cat, _) => cat.cat,
+              measureFn: (cat, _) => cat.qtd,
               data: datac,
-              labelAccessorFn: (Cat cat, a) => cat.qtd.toString(),
+              labelAccessorFn: (cat, a) => cat.qtd.toString(),
               outsideLabelStyleAccessorFn: (datum, index) =>
                   charts.TextStyleSpec(color: charts.MaterialPalette.black),
             )

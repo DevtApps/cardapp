@@ -38,7 +38,7 @@ class _PedidosPageState extends State<PedidosPage> {
     if (it.isRegistered(instance: modelCozinha)) {
       it.unregister(
           instance: modelCozinha,
-          disposingFunction: (t) => {print("unregistered")});
+          disposingFunction: (dynamic t) => {print("unregistered")});
     }
   }
 
@@ -53,7 +53,7 @@ class _PedidosPageState extends State<PedidosPage> {
     });
   }
 
-  var type = "";
+  String? type = "";
   init() async {
     try {
       var t = await secure.read(key: "type");
@@ -181,7 +181,7 @@ class _PedidosPageState extends State<PedidosPage> {
                         var result;
                         if (pedido is PedidoDelivery) {
                           result = await deliveryController.statusPedido(
-                              pedido.status + 1, pedido);
+                              pedido.status! + 1, pedido);
                         } else
                           result = await controller.status(
                               pedido.status + 1, pedido.mesa, pedido.sId);

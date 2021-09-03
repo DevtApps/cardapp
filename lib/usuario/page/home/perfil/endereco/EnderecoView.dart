@@ -12,7 +12,7 @@ class EnderecoView extends StatefulWidget {
 class _EnderecoViewState extends State<EnderecoView> {
   TextEditingController nameController = TextEditingController();
   MaskedTextController cpfController =
-  MaskedTextController(mask: "000.000.000-00");
+      MaskedTextController(mask: "000.000.000-00");
   UserController userController = UserController();
   loadData() async {
     try {
@@ -21,19 +21,19 @@ class _EnderecoViewState extends State<EnderecoView> {
       if (result != null) {
         return result;
       } else
-        return  List<Endereco>();
+        return [];
     } catch (e) {
-      return List<Endereco>();
+      return [];
     }
   }
 
-  loadPerfil()async{
+  loadPerfil() async {
     try {
-      DadosPessoais result = await userController.getPerfil();
+      DadosPessoais? result = await userController.getPerfil();
 
       if (result != null) {
-        nameController.text = result.nome;
-        cpfController.text = result.cpf != null? result.cpf:"";
+        nameController.text = result.nome!;
+        cpfController.text = result.cpf != null ? result.cpf! : "";
       } else
         return null;
     } catch (e) {
@@ -122,27 +122,36 @@ class _EnderecoViewState extends State<EnderecoView> {
                   Expanded(
                     child: FutureBuilder(
                       builder: (context, snap) {
-
-
                         if (snap.hasData) {
-                          List<Endereco> list = snap.data;
-                          if(list.isEmpty){
-                            return Center(child: Text("Cadastre um endereço"),);
+                          List<Endereco> list = snap.data as List<Endereco>;
+                          if (list.isEmpty) {
+                            return Center(
+                              child: Text("Cadastre um endereço"),
+                            );
                           }
                           return ListView.builder(
                             itemBuilder: (c, i) {
                               return ListTile(
-                                  title: Text(list[i].nome),
-                                  subtitle: Text(list[i].formatted),
-                                trailing: IconButton(icon: Icon(Icons.delete, color: Colors.red,), onPressed: ()async{
-                                  var result = await userController.deleteAddres(list[i].id);
-                                  if(!result){
-                                    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Não foi possível deletar o endereço")));
-                                  }else setState(() {
-
-                                  });
-                                },),
-                                  );
+                                title: Text(list[i].nome),
+                                subtitle: Text(list[i].formatted),
+                                trailing: IconButton(
+                                  icon: Icon(
+                                    Icons.delete,
+                                    color: Colors.red,
+                                  ),
+                                  onPressed: () async {
+                                    var result = await userController
+                                        .deleteAddres(list[i].id);
+                                    if (!result) {
+                                      ScaffoldMessenger.of(context)
+                                          .showSnackBar(SnackBar(
+                                              content: Text(
+                                                  "Não foi possível deletar o endereço")));
+                                    } else
+                                      setState(() {});
+                                  },
+                                ),
+                              );
                             },
                             itemCount: list.length,
                           );

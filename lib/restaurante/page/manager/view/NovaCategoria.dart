@@ -11,8 +11,8 @@ class NovaCategoria extends StatefulWidget {
 class _NovaCategoriaState extends State<NovaCategoria> {
   var categoryController = TextEditingController();
   var produtoController = ProdutoController();
-  var _progress = 0.0;
-  var _preparar = true;
+  double? _progress = 0.0;
+  bool? _preparar = true;
   @override
   Widget build(BuildContext context) {
     return Stack(

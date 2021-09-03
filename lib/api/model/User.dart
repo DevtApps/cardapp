@@ -1,10 +1,10 @@
 class User {
-  String sId;
-  String email;
-  String senha;
-  String type;
-  String nome;
-  int iV;
+  String? sId;
+  String? email;
+  String? senha;
+  String? type;
+  String? nome;
+  int? iV;
 
   User({this.sId, this.email, this.senha, this.type, this.iV});
 

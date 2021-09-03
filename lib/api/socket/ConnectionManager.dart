@@ -6,8 +6,8 @@ import 'package:web_socket_channel/io.dart';
 import '../Api.dart';
 
 class ConnectionManager {
-  IOWebSocketChannel web;
-  String token;
+  IOWebSocketChannel? web;
+  String? token;
 
   var onMessage;
   ConnectionManager(this.token) {
@@ -17,13 +17,13 @@ class ConnectionManager {
   }
 
   close() {
-    web.sink.close(1000);
+    web!.sink.close(1000);
     web = null;
   }
 
   init() {
     web = IOWebSocketChannel.connect(SOCKET, headers: {"token": this.token});
-    web.stream.listen((message) {
+    web!.stream.listen((message) {
       var json = jsonDecode(message);
       if (json['action'] != null) {
         if (onMessage != null) {
@@ -39,6 +39,6 @@ class ConnectionManager {
 
   send(data) {
     print(data);
-    web.sink.add(data);
+    web!.sink.add(data);
   }
 }

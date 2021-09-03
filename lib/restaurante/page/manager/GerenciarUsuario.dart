@@ -107,7 +107,7 @@ class _GerenciarUsuarioState extends State<GerenciarUsuario> {
             User user = users[i];
 
             return ListTile(
-              title: Text(user.nome),
+              title: Text(user.nome!),
               trailing: Row(
                 children: [
                   IconButton(

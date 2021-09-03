@@ -24,14 +24,13 @@ class _PerfilViewState extends PerfilModel {
         child: FutureBuilder(
           builder: (c, snap) {
             if (snap.hasData) {
-              DadosPessoais perfil = snap.data;
+              DadosPessoais perfil = snap.data as DadosPessoais;
               return ListView(
-                padding: EdgeInsets.only(top:32, right: 16, left: 16),
+                padding: EdgeInsets.only(top: 32, right: 16, left: 16),
                 children: [
                   Container(
                     width: size.width,
                     height: size.height * 0.3,
-
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
@@ -42,10 +41,13 @@ class _PerfilViewState extends PerfilModel {
                               width: size.width * 0.4,
                               height: size.width * 0.4,
                               padding: EdgeInsets.all(8),
-                              child: Icon(Icons.person, size: size.width*0.3,color: Colors.white,),
+                              child: Icon(
+                                Icons.person,
+                                size: size.width * 0.3,
+                                color: Colors.white,
+                              ),
                               decoration: BoxDecoration(
                                 color: Colors.orange,
-                                
                                 borderRadius:
                                     BorderRadius.circular(size.width * 0.3),
                                 /*image: DecorationImage(
@@ -61,7 +63,7 @@ class _PerfilViewState extends PerfilModel {
                         ),
                         Center(
                           child: Text(
-                            perfil.nome,
+                            perfil.nome!,
                             style: TextStyle(
                                 color: Colors.black,
                                 fontWeight: FontWeight.w300,
@@ -78,7 +80,7 @@ class _PerfilViewState extends PerfilModel {
                       style: TextStyle(fontSize: 16),
                     ),
                   ),
-                 /* Card(
+                  /* Card(
                     child: ListTile(
                       title: Text("Forma de Pagamento"),
                       trailing: Icon(Icons.payment_outlined),
@@ -96,7 +98,6 @@ class _PerfilViewState extends PerfilModel {
                       },
                     ),
                   ),
-
                   Card(
                     child: ListTile(
                       title: Text("Alterar Senha"),
@@ -106,7 +107,10 @@ class _PerfilViewState extends PerfilModel {
                   Card(
                     child: ListTile(
                       tileColor: Colors.orange,
-                      title: Text("Sair", style: TextStyle(color: Colors.white),),
+                      title: Text(
+                        "Sair",
+                        style: TextStyle(color: Colors.white),
+                      ),
                       onTap: () async {
                         await storage.deleteAll();
                         try {

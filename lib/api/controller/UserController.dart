@@ -52,7 +52,7 @@ class UserController {
 
   register(nome, email, senha, type, user) async {
     try {
-      var id = "";
+      String? id = "";
       if (user != null) id = user.sId;
       Response result = await http.post(Uri.parse(host + "/register"), body: {
         "nome": nome,
@@ -80,7 +80,7 @@ class UserController {
 
   registerFuncionario(nome, email, senha, type, user) async {
     try {
-      var id = "";
+      String? id = "";
       if (user != null) id = user.sId;
       Response result = await http
           .post(Uri.parse(host + "/register/funcionario"), body: {
@@ -218,7 +218,7 @@ class UserController {
     }
   }
 
-  Future<DadosPessoais> getPerfil() async {
+  Future<DadosPessoais?> getPerfil() async {
     try {
       Response result = await http.get(
         Uri.parse(host + "/perfil"),

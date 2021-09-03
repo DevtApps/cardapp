@@ -1,5 +1,5 @@
 class ModelUser {
-  String token;
+  String? token;
 
   ModelUser(this.token);
 }

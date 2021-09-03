@@ -50,7 +50,7 @@ class _MesaPageState extends State<MesaPage> {
   Mesa mesa;
   List<Pedido> pedidos = [];
   _MesaPageState(this.mesa);
-  var _progress = null;
+  dynamic _progress = null;
   var total = 0.0;
   var valor = "R\$0,00";
 
@@ -81,7 +81,7 @@ class _MesaPageState extends State<MesaPage> {
           for (var pedido in mesaDetalhe.itens) {
             Pedido p = Pedido.fromJson(pedido);
             pedidos.add(p);
-            total += p.produto.preco * p.quantidade;
+            total += p.produto!.preco! * p.quantidade!;
           }
           valor = format.format(total);
         });
@@ -204,7 +204,7 @@ class _MesaPageState extends State<MesaPage> {
                           itemBuilder: (ctx, i) {
                             Pedido pedido = pedidos[i];
                             return ListTile(
-                                title: Text(pedido.produto.nome),
+                                title: Text(pedido.produto!.nome!),
                                 trailing: Row(
                                   mainAxisSize: MainAxisSize.min,
                                   children: [
@@ -216,7 +216,7 @@ class _MesaPageState extends State<MesaPage> {
                                         style: TextStyle(fontSize: 16),
                                       ),
                                     ),
-                                    pedido.observacao.length > 0
+                                    pedido.observacao!.length > 0
                                         ? IconButton(
                                             icon: Icon(
                                               Icons.message,
@@ -235,7 +235,7 @@ class _MesaPageState extends State<MesaPage> {
                                                               MainAxisSize.min,
                                                           children: [
                                                             Text(
-                                                              pedido.observacao,
+                                                              pedido.observacao!,
                                                               style: TextStyle(
                                                                   fontSize: 18),
                                                             ),
@@ -322,7 +322,7 @@ class _MesaPageState extends State<MesaPage> {
                                             onPressed: () async {
                                               
                                               await mesaController.status(
-                                                  pedido.status + 1,
+                                                  pedido.status! + 1,
                                                   mesa.id,
                                                   pedido.sId,
                                                   notify: false);

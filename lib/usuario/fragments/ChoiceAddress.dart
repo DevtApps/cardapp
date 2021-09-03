@@ -26,7 +26,7 @@ class _ChoiceAddresState extends State<ChoiceAddres> {
               child: FutureBuilder(
                 builder: (context, snap) {
                   if (snap.hasData) {
-                    List<Endereco> list = snap.data;
+                    List<Endereco> list = snap.data as List<Endereco>;
                     return ListView.builder(
                       itemBuilder: (c, i) {
                         return Card(

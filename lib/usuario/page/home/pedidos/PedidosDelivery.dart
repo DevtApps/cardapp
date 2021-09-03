@@ -15,7 +15,7 @@ class PedidosDelivery extends StatefulWidget {
 }
 
 class _PedidosDeliveryState extends PedidosDeliveryModel {
-  Size size;
+  late Size size;
   @override
   Widget build(BuildContext context) {
     size = MediaQuery.of(context).size;
@@ -35,7 +35,7 @@ class _PedidosDeliveryState extends PedidosDeliveryModel {
         child: FutureBuilder(
           builder: (c, snap) {
             if (snap.hasData) {
-              List<Delivery> list = snap.data;
+              List<Delivery>? list = snap.data as List<Delivery>;
               return ListView.builder(
                 itemBuilder: (c, i) {
                   return Card(
@@ -59,7 +59,7 @@ class _PedidosDeliveryState extends PedidosDeliveryModel {
                                 Container(
                                   child: Text(
                                     formatDate
-                                        .format(list[i].createdAt.toLocal()),
+                                        .format(list![i].createdAt.toLocal()),
                                     style: TextStyle(
                                       fontSize: 16,
                                       fontWeight: FontWeight.w300,
@@ -87,17 +87,17 @@ class _PedidosDeliveryState extends PedidosDeliveryModel {
                             ),
                             Column(
                               mainAxisSize: MainAxisSize.min,
-                              children: List.generate(list[i].pedidos.length,
+                              children: List.generate(list[i].pedidos!.length,
                                   (index) {
-                                PedidoDelivery pedido = list[i].pedidos[index];
+                                PedidoDelivery pedido = list[i].pedidos![index];
                                 return ListTile(
                                   contentPadding:
                                       EdgeInsets.only(left: 16, right: 16),
                                   dense: true,
-                                  title:
-                                      Text(list[i].pedidos[index].produto.nome),
+                                  title: Text(
+                                      list[i].pedidos![index].produto!.nome!),
                                   trailing: Text(
-                                      "${pedido.quantidade} x ${formatCurrency.format(pedido.produto.preco * pedido.quantidade)}"),
+                                      "${pedido.quantidade} x ${formatCurrency.format(pedido.produto!.preco! * pedido.quantidade!)}"),
                                 );
                               }),
                             ),
@@ -167,7 +167,7 @@ class _PedidosDeliveryState extends PedidosDeliveryModel {
                         )),
                   );
                 },
-                itemCount: snap.data.length,
+                itemCount: list.length,
               );
             } else if (snap.connectionState == ConnectionState.waiting) {
               return Center(
@@ -205,6 +205,8 @@ class _PedidosDeliveryState extends PedidosDeliveryModel {
         {
           return Text("Pedido Entregue");
         }
+      default:
+        return Text("Recebemos seu pedido");
     }
   }
 }

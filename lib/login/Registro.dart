@@ -30,8 +30,8 @@ class _RegistroState extends State<Registro> {
 
   FlutterSecureStorage storage = FlutterSecureStorage();
   GetIt it = GetIt.instance;
-  var value = 0.0;
-  RegistroArgs args;
+  double? value = 0.0;
+  RegistroArgs? args;
 
   @override
   void initState() {
@@ -86,7 +86,7 @@ class _RegistroState extends State<Registro> {
   @override
   Widget build(BuildContext context) {
     SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
-    args = ModalRoute.of(context).settings.arguments;
+    args = ModalRoute.of(context)!.settings.arguments as RegistroArgs?;
 
     var size = MediaQuery.of(context).size;
     return Scaffold(

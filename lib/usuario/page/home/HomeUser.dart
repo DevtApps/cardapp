@@ -14,7 +14,7 @@ class _HomeUserState extends State<HomeUser> {
   var currentSelected = 0;
 
   PageController _pageController = PageController(initialPage: 0);
-  MainView produtoPageUser;
+  MainView? produtoPageUser;
   PedidosDelivery pedidosDelivery = PedidosDelivery();
   PerfilView perfilView = PerfilView();
 
@@ -39,7 +39,7 @@ class _HomeUserState extends State<HomeUser> {
         controller: _pageController,
         physics: NeverScrollableScrollPhysics(),
         children: [
-          produtoPageUser,
+          produtoPageUser!,
           pedidosDelivery,
           perfilView,
         ],

@@ -1,13 +1,13 @@
 import 'package:cardapio/api/model/Produto.dart';
 
 class PedidoDelivery {
-  String sId;
-  String observacao;
-  Produto produto;
-  int quantidade;
-  int status = 0;
-  String type;
-  String delivery;
+  String? sId;
+  String? observacao;
+  Produto? produto;
+  int? quantidade;
+  int? status = 0;
+  String? type;
+  String? delivery;
 
   PedidoDelivery(
       {this.sId, this.observacao, this.produto, this.quantidade, this.status});
@@ -26,7 +26,7 @@ class PedidoDelivery {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['_id'] = this.sId;
     data['observacao'] = this.observacao;
-    data['produto'] = this.produto.toJson();
+    data['produto'] = this.produto!.toJson();
     data['quantidade'] = this.quantidade;
     data['status'] = this.status;
 

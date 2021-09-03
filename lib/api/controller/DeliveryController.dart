@@ -20,7 +20,7 @@ class DeliveryController {
     return await storage.read(key: "token");
   }
 
-  novoPedido(List<PedidoDelivery> pedidos, Endereco endereco, String payment,
+  novoPedido(List<PedidoDelivery> pedidos, Endereco endereco, String? payment,
       double tax) async {
     try {
       var delivery = Map();
@@ -69,7 +69,7 @@ class DeliveryController {
     }
   }
 
-  Future<List<Delivery>> loadDeliveries({entregas}) async {
+  Future<List<Delivery>?> loadDeliveries({entregas}) async {
     try {
       Response result = await get(
           Uri.parse(host + "/deliveries?entregas=${entregas}"),

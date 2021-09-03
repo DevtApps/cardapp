@@ -1,8 +1,8 @@
 class Categoria {
-  String sId;
-  String nome;
+  String? sId;
+  String? nome;
   bool active = false;
-  bool preparar = false;
+  bool? preparar = false;
 
   Categoria({this.sId, this.nome, this.preparar});
 

@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 class DialogPedido extends StatefulWidget {
-  Produto item;
+  Produto? item;
   var mesa;
   var pedindo;
   var pedido;
@@ -17,18 +17,18 @@ class DialogPedido extends StatefulWidget {
 }
 
 class _DialogPedidoState extends State<DialogPedido> {
-  var qtd = 1;
-  Produto item;
+  int? qtd = 1;
+  Produto? item;
   var mesa;
   var pedindo;
-  Pedido pedido;
+  Pedido? pedido;
 
   MesaController mesaController = MesaController();
 
   TextEditingController obsController = TextEditingController();
   _DialogPedidoState(this.item, this.mesa, {this.pedido, this.pedindo});
 
-  var valor = 0.0;
+  double? valor = 0.0;
 
   NumberFormat format =
       NumberFormat.currency(locale: "pt_BR", symbol: "R\S", decimalDigits: 2);
@@ -36,14 +36,14 @@ class _DialogPedidoState extends State<DialogPedido> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    valor = item.preco;
+    valor = item!.preco;
 
     if (pedido != null) {
       try {
         setState(() {
-          valor = pedido.quantidade * pedido.produto.preco;
-          qtd = pedido.quantidade;
-          obsController.text = pedido.observacao;
+          valor = pedido!.quantidade! * pedido!.produto!.preco!;
+          qtd = pedido!.quantidade;
+          obsController.text = pedido!.observacao!;
         });
       } catch (e) {}
     }
@@ -66,7 +66,7 @@ class _DialogPedidoState extends State<DialogPedido> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Text(
-                        item.nome,
+                        item!.nome!,
                         style: TextStyle(fontSize: size.width * 0.05),
                       ),
                       SizedBox(
@@ -83,9 +83,9 @@ class _DialogPedidoState extends State<DialogPedido> {
                         GestureDetector(
                           onTap: () {
                             setState(() {
-                              if (qtd > 1) {
-                                qtd -= 1;
-                                valor = qtd * item.preco;
+                              if (qtd! > 1) {
+                                qtd = qtd! - 1;
+                                valor = qtd! * item!.preco!;
                               }
                             });
                           },
@@ -116,8 +116,8 @@ class _DialogPedidoState extends State<DialogPedido> {
                         GestureDetector(
                             onTap: () {
                               setState(() {
-                                qtd += 1;
-                                valor = qtd * item.preco;
+                                qtd = qtd! + 1;
+                                valor = qtd! * item!.preco!;
                               });
                             },
                             child: Container(
@@ -179,13 +179,13 @@ class _DialogPedidoState extends State<DialogPedido> {
                                 var r = await mesaController.atualizarPedido(
                                     qtd,
                                     obsController.text,
-                                    item,
+                                    item!,
                                     mesa.id,
-                                    pedido.sId);
+                                    pedido!.sId);
                                 if (r) Navigator.of(context).pop(null);
                               } else {
                                 var status = 0;
-                                if (!item.categoria.preparar) status = 2;
+                                if (!item!.categoria!.preparar!) status = 2;
                                 Navigator.of(context).pop(Pedido(
                                     quantidade: qtd,
                                     observacao: obsController.text,

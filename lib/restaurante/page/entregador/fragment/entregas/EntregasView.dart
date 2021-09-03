@@ -27,7 +27,7 @@ class _EntregasViewState extends EntregasModel {
       body: FutureBuilder(
         builder: (c, snap) {
           if (snap.hasData) {
-            List<Delivery> list = snap.data;
+            List<Delivery>? list = snap.data as List<Delivery>;
             return RefreshIndicator(
               onRefresh: refresh,
               child: ListView.builder(
@@ -37,14 +37,14 @@ class _EntregasViewState extends EntregasModel {
                       mainAxisSize: MainAxisSize.min,
                       children: [
                         ListTile(
-                          title: Text(list[i]?.nome),
+                          title: Text(list[i].nome!),
                         ),
                         Container(
                           child: Column(
                             children: List.generate(
-                              list[i].pedidos.length,
+                              list[i].pedidos!.length,
                               (index) {
-                                List<PedidoDelivery> pedidos = list[i].pedidos;
+                                List<PedidoDelivery> pedidos = list[i].pedidos!;
                                 return Container(
                                   margin: EdgeInsets.only(left: 16, right: 16),
                                   child: Row(
@@ -52,10 +52,10 @@ class _EntregasViewState extends EntregasModel {
                                         MainAxisAlignment.spaceBetween,
                                     children: [
                                       Text(
-                                        pedidos[index].produto.nome,
+                                        pedidos[index].produto!.nome!,
                                       ),
                                       Text(
-                                          "${pedidos[index].quantidade} x ${currency.format(pedidos[index].produto.preco)}"),
+                                          "${pedidos[index].quantidade} x ${currency.format(pedidos[index].produto!.preco)}"),
                                     ],
                                   ),
                                 );
@@ -80,7 +80,7 @@ class _EntregasViewState extends EntregasModel {
                             children: [
                               Text("TOTAL"),
                               Text(getTotalCurrency(
-                                  list[i].pedidos, list[i].tax))
+                                  list[i].pedidos!, list[i].tax!))
                             ],
                           ),
                         ),
@@ -94,10 +94,10 @@ class _EntregasViewState extends EntregasModel {
                           margin: EdgeInsets.only(top: 16, left: 16, right: 16),
                         ),
                         ListTile(
-                          title: Text(list[i].endereco.formatted),
+                          title: Text(list[i].endereco!.formatted),
                           onTap: () {},
                         ),
-                        list[i].status < 2
+                        list[i].status! < 2
                             ? Container(
                                 child: TextButton(
                                     child: Text("Entregue"),
@@ -106,7 +106,7 @@ class _EntregasViewState extends EntregasModel {
                                     }),
                               )
                             : SizedBox(),
-                        list[i].status >= 2
+                        list[i].status! >= 2
                             ? Container(
                                 padding: EdgeInsets.all(8),
                                 child: Text("Pedido Entregue"),
@@ -119,7 +119,7 @@ class _EntregasViewState extends EntregasModel {
                     ),
                   );
                 },
-                itemCount: snap.data.length,
+                itemCount: list.length,
               ),
             );
           } else if (snap.connectionState == ConnectionState.waiting) {

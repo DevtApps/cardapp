@@ -18,7 +18,7 @@ import 'package:path_provider/path_provider.dart';
 import 'view/NovaCategoria.dart';
 
 class NovoProduto extends StatefulWidget {
-  Produto produto;
+  Produto? produto;
 
   NovoProduto({this.produto});
   @override
@@ -26,12 +26,12 @@ class NovoProduto extends StatefulWidget {
 }
 
 class _NovoProdutoState extends State<NovoProduto> {
-  var value = 0;
-  Produto produto;
+  int? value = 0;
+  Produto? produto;
 
   _NovoProdutoState({this.produto});
 
-  var _progress = 0.0;
+  double? _progress = 0.0;
   List<Categoria> categorys = [Categoria(nome: "Categoria")];
 
   final picker = ImagePicker();
@@ -45,13 +45,13 @@ class _NovoProdutoState extends State<NovoProduto> {
 
   var categoryController = TextEditingController();
 
-  File image = null;
+  File? image = null;
   var produtoController = ProdutoController();
 
   save() async {
     if (nomeCon.text.length < 3 ||
         precoCon.text.length < 6 ||
-        image.length == 0) {
+        image!.length == 0) {
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
         duration: Duration(milliseconds: 1500),
         backgroundColor: Colors.red,
@@ -60,7 +60,7 @@ class _NovoProdutoState extends State<NovoProduto> {
           style: TextStyle(color: Colors.white),
         ),
       ));
-    } else if (categorys[value].nome == "Categoria") {
+    } else if (categorys[value!].nome == "Categoria") {
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
         duration: Duration(milliseconds: 1500),
         backgroundColor: Colors.red,
@@ -79,7 +79,7 @@ class _NovoProdutoState extends State<NovoProduto> {
         var url = await upload();
         print(url);
         var result = await produtoController.save(
-            nomeCon.text, descCon.text, text, categorys[value], url, produto);
+            nomeCon.text, descCon.text, text, categorys[value!], url, produto);
         print(result);
         if (result) {
           setState(() {
@@ -129,7 +129,7 @@ class _NovoProdutoState extends State<NovoProduto> {
 
   getImage() async {
     try {
-      var pickedFile = await picker.getImage(source: ImageSource.gallery);
+      var pickedFile = await (picker.getImage(source: ImageSource.gallery) as FutureOr<PickedFile>);
       if (pickedFile.path != null) {
         setState(() {
           image = File(pickedFile.path);
@@ -145,9 +145,9 @@ class _NovoProdutoState extends State<NovoProduto> {
     FirebaseStorage storage = FirebaseStorage.instance;
     var data = DateTime.now();
     var ref = storage.ref().child(APP).child("produtos").child(
-        "${image.path.substring(image.path.lastIndexOf("/"))}$token${data.millisecondsSinceEpoch}.jpg");
+        "${image!.path.substring(image!.path.lastIndexOf("/"))}$token${data.millisecondsSinceEpoch}.jpg");
 
-    final UploadTask uploadTask = ref.putFile(image);
+    final UploadTask uploadTask = ref.putFile(image!);
 
     TaskSnapshot snap = await uploadTask;
 
@@ -169,7 +169,7 @@ class _NovoProdutoState extends State<NovoProduto> {
       });
       await loadCategorys();
       if (produto != null) {
-        var split = produto.preco.toString().split(".");
+        var split = produto!.preco.toString().split(".");
 
         if (split[1].length == 0)
           split[1] = "00";
@@ -182,13 +182,13 @@ class _NovoProdutoState extends State<NovoProduto> {
 
         if (preco.length == 5) precoCon.mask = "R\$000,00";
 
-        nomeCon.text = produto.nome;
-        descCon.text = produto.descricao;
+        nomeCon.text = produto!.nome!;
+        descCon.text = produto!.descricao!;
         precoCon.updateText(preco);
 
         if (categorys.length > 0) {
           for (var i = 0; i < categorys.length; i++) {
-            if (categorys[i].nome == produto.categoria) {
+            if (categorys[i].nome == produto!.categoria) {
               setState(() {
                 value = i;
               });
@@ -197,14 +197,14 @@ class _NovoProdutoState extends State<NovoProduto> {
           }
         }
 
-        var path = await getExternalStorageDirectory();
+        var path = await (getExternalStorageDirectory() as FutureOr<Directory>);
 
         var time = DateTime.now().millisecondsSinceEpoch.toString();
         File file = new File("${path.path}/${time}.png");
 
         print(file.path);
 
-        Response response = await http.get(Uri.parse(produto.image));
+        Response response = await http.get(Uri.parse(produto!.image!));
         file.writeAsBytes(response.bodyBytes);
 
         setState(() {
@@ -281,7 +281,7 @@ class _NovoProdutoState extends State<NovoProduto> {
                   : GestureDetector(
                       child: Container(
                         width: size.width / 3,
-                        child: Image.file(image,
+                        child: Image.file(image!,
                             width: size.width / 3, height: size.width / 3),
                       ),
                       onTap: () => getImage(),
@@ -338,17 +338,17 @@ class _NovoProdutoState extends State<NovoProduto> {
                         return DropdownMenuItem(
                           child: Container(
                             width: double.infinity,
-                            child: Text(category.nome),
+                            child: Text(category.nome!),
                           ),
                           value: index,
                         );
                       }),
-                      onChanged: (val) {
+                      onChanged: (dynamic val) {
                         setState(() {
                           value = val;
                         });
                       },
-                      hint: Text(categorys[value].nome),
+                      hint: Text(categorys[value!].nome!),
                     ),
                   ),
                   /* Container(
@@ -396,7 +396,7 @@ class _NovoProdutoState extends State<NovoProduto> {
                           style: TextStyle(color: Colors.white)),
                       onPressed: () async {
                         try {
-                          var result = await produtoController.delete(produto);
+                          var result = await produtoController.delete(produto!);
                           if (result)
                             Navigator.pop(context);
                           else

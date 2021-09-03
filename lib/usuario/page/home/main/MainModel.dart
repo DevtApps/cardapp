@@ -6,5 +6,5 @@ abstract class MainModel extends State<MainView>{
   var nextPedidos;
   MainModel(this.nextPedidos);
 
-  Size size;
+  late Size size;
 }

@@ -35,14 +35,14 @@ class _ProdutoPageState extends State<ProdutoPageUser>
 
   List<Categoria> categorys = [];
 
-  List<Produto> produtos = [];
+  List<Produto?> produtos = [];
   List<Produto> produtosAux = [];
   var filtro = [];
   GlobalKey _scaffold = new GlobalKey<ScaffoldState>();
 
   UserController userController = UserController();
   var produtoController = ProdutoController();
-  var _progress = 0.0;
+  double? _progress = 0.0;
 
   TextEditingController searchController = TextEditingController();
 
@@ -130,7 +130,7 @@ class _ProdutoPageState extends State<ProdutoPageUser>
   filter({list}) {
     if (list != null) {
       if (filtro.length > 0) {
-        List<Produto> aux = [];
+        List<Produto?> aux = [];
         for (var p in list) {
           if (filtro.contains(p.categoria.nome)) {
             aux.add(p);
@@ -144,7 +144,7 @@ class _ProdutoPageState extends State<ProdutoPageUser>
       if (filtro.length > 0) {
         List<Produto> aux = [];
         for (var p in produtosAux) {
-          if (filtro.contains(p.categoria.nome)) {
+          if (filtro.contains(p.categoria!.nome)) {
             aux.add(p);
           }
         }
@@ -161,9 +161,9 @@ class _ProdutoPageState extends State<ProdutoPageUser>
 
       if (text.length > 0) {
         produtos = produtosAux;
-        List<Produto> aux = [];
+        List<Produto?> aux = [];
         for (var p in produtos) {
-          if (p.nome.toLowerCase().contains(text.toLowerCase())) {
+          if (p!.nome!.toLowerCase().contains(text.toLowerCase())) {
             aux.add(p);
           }
         }
@@ -182,7 +182,7 @@ class _ProdutoPageState extends State<ProdutoPageUser>
 
   var show = false;
 
-  AnimationController controller;
+  AnimationController? controller;
 
   @override
   Widget build(BuildContext context) {
@@ -360,27 +360,26 @@ class _ProdutoPageState extends State<ProdutoPageUser>
     Size size = MediaQuery.of(context).size;
     return Container(
         height: 300,
-        child:TweenAnimationBuilder<double>(
-      builder: (BuildContext context, double value, Widget child) {
-        return Opacity(
-          opacity: value,
-          child: GestureDetector(
-              child: Card(
-                  child: AnimatedOpacity(
-                duration: Duration(milliseconds: 300),
-                opacity: 1,
-                child: Container(
-                    height: size.width*0.7,
-                    child: Column(
-                      children: [
-                        Image(
-                          image: NetworkImage(
-                            item.image,
-                          ),
-                          height: size.width*0.3,
-                          fit: BoxFit.cover,
-                        ),
-
+        child: TweenAnimationBuilder<double>(
+          builder: (BuildContext context, double value, Widget? child) {
+            return Opacity(
+              opacity: value,
+              child: GestureDetector(
+                  child: Card(
+                    child: AnimatedOpacity(
+                        duration: Duration(milliseconds: 300),
+                        opacity: 1,
+                        child: Container(
+                          height: size.width * 0.7,
+                          child: Column(
+                            children: [
+                              Image(
+                                image: NetworkImage(
+                                  item.image,
+                                ),
+                                height: size.width * 0.3,
+                                fit: BoxFit.cover,
+                              ),
                               Text(
                                 item.nome,
                                 maxLines: 1,
@@ -393,32 +392,31 @@ class _ProdutoPageState extends State<ProdutoPageUser>
                                 textAlign: TextAlign.center,
                                 style: TextStyle(),
                               ),
+                            ],
+                          ),
+                        )),
+                  ),
+                  onTap: () async {
+                    node.unfocus();
+                    var pedido = await Navigator.push(
+                        context,
+                        PageRouteBuilder(
+                            opaque: false,
+                            fullscreenDialog: true,
+                            pageBuilder: (ctx, a1, a2) => DialogPedido(item)));
 
-
-                      ],
-                ),
-              )),),
-              onTap: () async {
-                node.unfocus();
-                var pedido = await Navigator.push(
-                    context,
-                    PageRouteBuilder(
-                        opaque: false,
-                        fullscreenDialog: true,
-                        pageBuilder: (ctx, a1, a2) => DialogPedido(item)));
-
-                if (pedido != null) {
-                  setState(() {
-                    pedidos.add(pedido);
-                  });
-                }
-              }),
-        );
-      },
-      tween: Tween(begin: 0.0, end: 1.0),
-      duration: Duration(milliseconds: 700),
-      curve: Curves.fastOutSlowIn,
-    ));
+                    if (pedido != null) {
+                      setState(() {
+                        pedidos.add(pedido);
+                      });
+                    }
+                  }),
+            );
+          },
+          tween: Tween(begin: 0.0, end: 1.0),
+          duration: Duration(milliseconds: 700),
+          curve: Curves.fastOutSlowIn,
+        ));
   }
 
   Widget Bottom(size) {
@@ -435,7 +433,7 @@ class _ProdutoPageState extends State<ProdutoPageUser>
                   itemBuilder: (ctx, i) {
                     PedidoDelivery pedido = pedidos[i];
                     return ListTile(
-                        title: Text(pedido.produto.nome),
+                        title: Text(pedido.produto!.nome!),
                         trailing: Row(
                           mainAxisSize: MainAxisSize.min,
                           children: [
@@ -446,7 +444,7 @@ class _ProdutoPageState extends State<ProdutoPageUser>
                                 style: TextStyle(fontSize: 16),
                               ),
                             ),
-                            pedido.observacao.length > 0
+                            pedido.observacao!.length > 0
                                 ? IconButton(
                                     icon: Icon(
                                       Icons.message,
@@ -464,7 +462,7 @@ class _ProdutoPageState extends State<ProdutoPageUser>
                                                       MainAxisSize.min,
                                                   children: [
                                                     Text(
-                                                      pedido.observacao,
+                                                      pedido.observacao!,
                                                       style: TextStyle(
                                                           fontSize: 18),
                                                     ),
@@ -588,7 +586,7 @@ class _ProdutoPageState extends State<ProdutoPageUser>
                     child: FutureBuilder(
                       builder: (context, snap) {
                         if (snap.hasData) {
-                          List<Endereco> list = snap.data;
+                          List<Endereco> list = snap.data as List<Endereco>;
                           return ListView.builder(
                             itemBuilder: (c, i) {
                               return Card(

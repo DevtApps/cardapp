@@ -33,7 +33,7 @@ class _EntregadorPedidosViewState extends EntregadorPedidosModel {
       body: FutureBuilder(
         builder: (c, snap) {
           if (snap.hasData) {
-            List<Delivery> list = snap.data;
+            List<Delivery>? list = snap.data as List<Delivery>;
             return RefreshIndicator(
               onRefresh: refresh,
               child: ListView.builder(
@@ -43,14 +43,14 @@ class _EntregadorPedidosViewState extends EntregadorPedidosModel {
                       mainAxisSize: MainAxisSize.min,
                       children: [
                         ListTile(
-                          title: Text(list[i]?.nome),
+                          title: Text(list[i].nome!),
                         ),
                         Container(
                           child: Column(
                             children: List.generate(
-                              list[i].pedidos.length,
+                              list[i].pedidos!.length,
                               (index) {
-                                List<PedidoDelivery> pedidos = list[i].pedidos;
+                                List<PedidoDelivery> pedidos = list[i].pedidos!;
                                 return Container(
                                   margin: EdgeInsets.only(left: 16, right: 16),
                                   child: Row(
@@ -58,10 +58,10 @@ class _EntregadorPedidosViewState extends EntregadorPedidosModel {
                                         MainAxisAlignment.spaceBetween,
                                     children: [
                                       Text(
-                                        pedidos[index].produto.nome,
+                                        pedidos[index].produto!.nome!,
                                       ),
                                       Text(
-                                          "${pedidos[index].quantidade} x ${currency.format(pedidos[index].produto.preco)}"),
+                                          "${pedidos[index].quantidade} x ${currency.format(pedidos[index].produto!.preco)}"),
                                     ],
                                   ),
                                 );
@@ -86,7 +86,7 @@ class _EntregadorPedidosViewState extends EntregadorPedidosModel {
                             children: [
                               Text("TOTAL"),
                               Text(getTotalCurrency(
-                                  list[i].pedidos, list[i].tax))
+                                  list[i].pedidos!, list[i].tax!))
                             ],
                           ),
                         ),
@@ -100,7 +100,7 @@ class _EntregadorPedidosViewState extends EntregadorPedidosModel {
                           margin: EdgeInsets.only(top: 16, left: 16, right: 16),
                         ),
                         ListTile(
-                          title: Text(list[i].endereco.formatted),
+                          title: Text(list[i].endereco!.formatted),
                           onTap: () {},
                         ),
                         Container(
@@ -117,7 +117,7 @@ class _EntregadorPedidosViewState extends EntregadorPedidosModel {
                     ),
                   );
                 },
-                itemCount: snap.data.length,
+                itemCount: list.length,
               ),
             );
           } else if (snap.connectionState == ConnectionState.waiting) {

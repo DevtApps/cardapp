@@ -20,7 +20,7 @@ class _EntregadorViewState extends EntregadorModel {
       appBar: AppBar(
         brightness: Brightness.dark,
         title: Text(
-          nome != null ? nome : "",
+          nome != null ? nome! : "",
           style: TextStyle(color: Colors.white),
         ),
         actions: [
@@ -45,7 +45,7 @@ class _EntregadorViewState extends EntregadorModel {
       body: PageView(
         physics: NeverScrollableScrollPhysics(),
         controller: controller,
-        children: [pedidosView, entregasView],
+        children: [pedidosView!, entregasView!],
       ),
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: currentPage,

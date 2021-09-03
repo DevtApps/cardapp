@@ -16,12 +16,12 @@ class _TodosProdutosState extends State<TodosProdutos>
     with SingleTickerProviderStateMixin {
   List<Categoria> categorys = [];
 
-  List<Produto> produtos = [];
+  List<Produto?> produtos = [];
   List<Produto> produtosAux = [];
   var filtro = [];
 
   var produtoController = ProdutoController();
-  var _progress = 0.0;
+  double? _progress = 0.0;
 
   TextEditingController searchController = TextEditingController();
 
@@ -103,7 +103,7 @@ class _TodosProdutosState extends State<TodosProdutos>
   filter({list}) {
     if (list != null) {
       if (filtro.length > 0) {
-        List<Produto> aux = [];
+        List<Produto?> aux = [];
         for (var p in list) {
           if (filtro.contains(p.categoria)) {
             aux.add(p);
@@ -133,9 +133,9 @@ class _TodosProdutosState extends State<TodosProdutos>
 
     if (text.length > 0) {
       produtos = produtosAux;
-      List<Produto> aux = [];
+      List<Produto?> aux = [];
       for (var p in produtos) {
-        if (p.nome.toLowerCase().contains(text.toLowerCase())) {
+        if (p!.nome!.toLowerCase().contains(text.toLowerCase())) {
           aux.add(p);
         }
       }
@@ -292,7 +292,7 @@ class _TodosProdutosState extends State<TodosProdutos>
 
   Widget Item(item) {
     return TweenAnimationBuilder<double>(
-      builder: (BuildContext context, double value, Widget child) {
+      builder: (BuildContext context, double value, Widget? child) {
         return Opacity(
             opacity: value,
             child: GestureDetector(

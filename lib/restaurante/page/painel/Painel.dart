@@ -22,8 +22,8 @@ class Painel extends StatefulWidget {
 }
 
 class _PainelState extends State<Painel> {
-  ModelPainel model;
-  FlutterSecureStorage secure;
+  ModelPainel? model;
+  late FlutterSecureStorage secure;
   GetIt it = GetIt.instance;
 
   @override

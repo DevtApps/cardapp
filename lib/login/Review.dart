@@ -7,7 +7,7 @@ class Review extends StatefulWidget {
 }
 
 class _ReviewState extends State<Review> {
-  PageController _controller;
+  PageController? _controller;
 
   @override
   void initState() {
@@ -21,11 +21,11 @@ class _ReviewState extends State<Review> {
   paging() {
     Future.delayed(Duration(milliseconds: 3000), () {
       if (mounted) {
-        if (_controller.page == 2)
-          _controller.animateToPage(0,
+        if (_controller!.page == 2)
+          _controller!.animateToPage(0,
               duration: Duration(milliseconds: 600), curve: Curves.ease);
         else
-          _controller.nextPage(
+          _controller!.nextPage(
               duration: Duration(milliseconds: 500), curve: Curves.ease);
         paging();
       }
@@ -36,7 +36,7 @@ class _ReviewState extends State<Review> {
   void deactivate() {
     // TODO: implement deactivate
     super.deactivate();
-    _controller.dispose();
+    _controller!.dispose();
   }
 
   @override

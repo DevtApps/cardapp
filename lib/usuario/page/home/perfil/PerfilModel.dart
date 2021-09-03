@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:cardapio/api/Api.dart';
 import 'package:cardapio/api/controller/UserController.dart';
 import 'package:cardapio/api/model/DadosPessoais.dart';
@@ -19,12 +21,13 @@ abstract class PerfilModel extends State<PerfilView> {
 
   Future<DadosPessoais> loadPerfil() async {
     try {
-      DadosPessoais dados = await userController.getPerfil();
+      DadosPessoais dados =
+          await (userController.getPerfil() as FutureOr<DadosPessoais>);
       print(dados.toJson());
       if (dados != null) {
         return dados;
       } else {
-        var nome = await storage.read(key: "nome");
+        var nome = await (storage.read(key: "nome") as FutureOr<String>);
         return DadosPessoais(nome: nome);
       }
     } catch (e) {

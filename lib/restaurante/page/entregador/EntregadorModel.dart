@@ -16,15 +16,15 @@ abstract class EntregadorModel extends State<EntregadorView> {
   GetIt it = GetIt.instance;
   DeliveryController deliveryController = DeliveryController();
   NumberFormat currency = NumberFormat.currency(locale: "pt_BR", symbol: "R\$");
-  EntregadorPedidosView pedidosView;
-  EntregasView entregasView;
-  PageController controller;
+  EntregadorPedidosView? pedidosView;
+  EntregasView? entregasView;
+  PageController? controller;
   var currentPage = 0;
 
-  String nome = "";
+  String? nome = "";
 
   changePage(int index) {
-    controller.animateToPage(index,
+    controller!.animateToPage(index,
         duration: Duration(milliseconds: 400), curve: Curves.ease);
     setState(() {
       currentPage = index;

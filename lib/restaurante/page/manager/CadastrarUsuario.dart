@@ -4,19 +4,19 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 class CadastrarUsuario extends StatefulWidget {
-  User user;
+  User? user;
   CadastrarUsuario({this.user});
   @override
   _CadastrarUsuarioState createState() => _CadastrarUsuarioState(user: user);
 }
 
 class _CadastrarUsuarioState extends State<CadastrarUsuario> {
-  User user;
+  User? user;
   _CadastrarUsuarioState({this.user});
   TextEditingController nomeController = TextEditingController();
   TextEditingController emailController = TextEditingController();
   TextEditingController senhaController = TextEditingController();
-  var selected = {"nome": "Selecione uma categoria", "value": ""};
+  Map<String, String>? selected = {"nome": "Selecione uma categoria", "value": ""};
   UserController controller = UserController();
 
   var _toggle = true;
@@ -40,12 +40,12 @@ class _CadastrarUsuarioState extends State<CadastrarUsuario> {
         snack("Senha inválida", Colors.red);
         return;
       }
-      if (selected['value'] == "") {
+      if (selected!['value'] == "") {
         snack("Selecione uma categoria", Colors.red);
         return;
       }
       var result = await controller.registerFuncionario(nomeController.text,
-          emailController.text, senhaController.text, selected['value'], user);
+          emailController.text, senhaController.text, selected!['value'], user);
       if (result) {
         nomeController.text = "";
         emailController.text = "";
@@ -53,7 +53,7 @@ class _CadastrarUsuarioState extends State<CadastrarUsuario> {
         if (user != null)
           Navigator.of(context).pop();
         else {
-          snack("${selected['nome']} cadastrado", Colors.green);
+          snack("${selected!['nome']} cadastrado", Colors.green);
           Navigator.of(context).pop();
         }
       } else
@@ -80,12 +80,12 @@ class _CadastrarUsuarioState extends State<CadastrarUsuario> {
     super.initState();
 
     if (user != null) {
-      nomeController.text = user.nome;
-      emailController.text = user.email;
+      nomeController.text = user!.nome!;
+      emailController.text = user!.email!;
       Future.delayed(Duration(milliseconds: 100), () {
         setState(() {
           selected = categorias
-              .where((element) => element['value'] == user.type)
+              .where((element) => element['value'] == user!.type)
               .single;
         });
       });
@@ -190,15 +190,15 @@ class _CadastrarUsuarioState extends State<CadastrarUsuario> {
                             left: 16, right: 16, top: 8, bottom: 8),
                         child: DropdownButton(
                           isExpanded: true,
-                          onChanged: (val) {
+                          onChanged: (dynamic val) {
                             setState(() {
                               selected = val;
                             });
                           },
-                          hint: Text(selected['nome']),
+                          hint: Text(selected!['nome']!),
                           items: List.generate(categorias.length, (index) {
                             return DropdownMenuItem(
-                              child: Text(categorias[index]["nome"]),
+                              child: Text(categorias[index]["nome"]!),
                               value: categorias[index],
                             );
                           }),

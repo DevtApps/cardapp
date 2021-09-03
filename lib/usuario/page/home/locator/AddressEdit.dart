@@ -2,10 +2,10 @@ import 'package:cardapio/api/controller/UserController.dart';
 import 'package:cardapio/usuario/page/home/perfil/endereco/model/Endereco.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:geocoder/geocoder.dart';
+import 'package:google_place/google_place.dart';
 
 class AddressEdit extends StatefulWidget {
-  Address address;
+  Endereco address;
 
   AddressEdit(this.address);
   @override
@@ -13,8 +13,10 @@ class AddressEdit extends StatefulWidget {
 }
 
 class _AddressEditState extends State<AddressEdit> {
-  Address address;
+  Endereco address;
   _AddressEditState(this.address);
+
+  var places = GooglePlace("apiKEY");
 
   TextEditingController nome = TextEditingController();
   TextEditingController cidade = TextEditingController();
@@ -33,6 +35,7 @@ class _AddressEditState extends State<AddressEdit> {
     super.initState();
 
     if (address != null) {
+      /*
       cidade.text = address.subAdminArea;
       var _uf = '';
       address.adminArea.split(" ").forEach((element) {
@@ -41,6 +44,7 @@ class _AddressEditState extends State<AddressEdit> {
       uf.text = _uf;
       rua.text = address.thoroughfare;
       numero.text = address.subThoroughfare;
+      */
     }
   }
 
@@ -68,7 +72,7 @@ class _AddressEditState extends State<AddressEdit> {
                       Container(
                         child: TextFormField(
                           validator: (str) {
-                            return str.length >= 3
+                            return str!.length >= 3
                                 ? null
                                 : "Informe um nome para o endereço";
                           },
@@ -83,7 +87,7 @@ class _AddressEditState extends State<AddressEdit> {
                       Container(
                         child: TextFormField(
                           validator: (str) {
-                            return str.length >= 3 ? null : "Bairro inválido";
+                            return str!.length >= 3 ? null : "Bairro inválido";
                           },
                           controller: bairro,
                           decoration:
@@ -96,7 +100,7 @@ class _AddressEditState extends State<AddressEdit> {
                       Container(
                         child: TextFormField(
                           validator: (str) {
-                            return str.length >= 3 ? null : "Rua inválida";
+                            return str!.length >= 3 ? null : "Rua inválida";
                           },
                           controller: rua,
                           decoration:
@@ -112,7 +116,7 @@ class _AddressEditState extends State<AddressEdit> {
                           Expanded(
                             child: TextFormField(
                               validator: (str) {
-                                return str.length >= 1
+                                return str!.length >= 1
                                     ? null
                                     : "Número inválido";
                               },
@@ -143,7 +147,7 @@ class _AddressEditState extends State<AddressEdit> {
                               flex: 3,
                               child: TextFormField(
                                 validator: (str) {
-                                  return str.length >= 3
+                                  return str!.length >= 3
                                       ? null
                                       : "Cidade inválida";
                                 },
@@ -159,7 +163,7 @@ class _AddressEditState extends State<AddressEdit> {
                               flex: 1,
                               child: TextFormField(
                                 validator: (str) {
-                                  return str.length >= 2 ? null : "UF inválido";
+                                  return str!.length >= 2 ? null : "UF inválido";
                                 },
                                 controller: uf,
                                 decoration: InputDecoration(
@@ -179,7 +183,7 @@ class _AddressEditState extends State<AddressEdit> {
                 child: TextButton(
                   child: Text("Salvar"),
                   onPressed: () async {
-                    if (_form.currentState.validate()) {
+                    if (_form.currentState!.validate()) {
                       Endereco endereco = Endereco(
                           nome.text,
                           rua.text,
@@ -187,9 +191,9 @@ class _AddressEditState extends State<AddressEdit> {
                           bairro.text,
                           cidade.text,
                           uf.text,
-                          address.coordinates.latitude,
-                          address.coordinates.longitude,
-                          "${rua.text}, ${numero.text}, ${cidade.text} - ${uf.text}, ${address.postalCode}, ${address.countryName}");
+                          0, //address.coordinates.latitude,
+                          0, //address.coordinates.longitude,
+                          "${rua.text}, ${numero.text}, ${cidade.text} - ${uf.text}");
                       var result =
                           await userController.adicionarEndereco(endereco);
                       if (result == null) {

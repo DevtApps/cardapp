@@ -9,16 +9,16 @@ import 'package:intl/intl.dart';
 import 'package:stripe_payment/stripe_payment.dart';
 
 abstract class ResumeDeliveryModel extends State<ResumeDeliveryView> {
-  ResumeArgs args;
+  ResumeArgs? args;
   NumberFormat currency = NumberFormat.currency(symbol: "R\$", locale: "pt_BR");
   var tax = 3.0;
-  Endereco endereco = null;
-  var cardToken = null;
+  Endereco? endereco = null;
+  dynamic cardToken = null;
 
   int getAmount() {
     double amount = 0.0;
-    for (var pedido in args.pedidos) {
-      amount += pedido.produto.preco * pedido.quantidade;
+    for (var pedido in args!.pedidos) {
+      amount += pedido.produto!.preco! * pedido.quantidade!;
     }
     amount = amount * 100;
     return amount.toInt();
@@ -71,11 +71,11 @@ abstract class ResumeDeliveryModel extends State<ResumeDeliveryView> {
   }
 
   Future<Token> createPaymentMethodNative() async {
-    StripePayment.setStripeAccount(null);
+    // StripePayment.setStripeAccount("");
 
     var amount = 0.0;
-    for (var pedido in args.pedidos) {
-      amount += (pedido.quantidade * pedido.produto.preco);
+    for (var pedido in args!.pedidos) {
+      amount += (pedido.quantidade! * pedido.produto!.preco!);
     }
     amount += tax;
     Token token = await StripePayment.paymentRequestWithNativePay(

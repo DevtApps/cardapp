@@ -2,6 +2,7 @@ import 'package:cardapio/api/controller/UserController.dart';
 import 'package:cardapio/api/secure/ModelUser.dart';
 import 'package:cardapio/api/socket/ConnectionManager.dart';
 import 'package:cardapio/api/socket/NotificationManager.dart';
+import 'package:cardapio/login/LoginModel.dart';
 import 'package:cardapio/login/Registro.dart';
 import 'package:cardapio/restaurante/page/manager/Sobre.dart';
 import 'package:flutter/material.dart';
@@ -9,91 +10,16 @@ import 'package:flutter/services.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get_it/get_it.dart';
 
-class Login extends StatefulWidget {
+class LoginView extends StatefulWidget {
   @override
   _LoginState createState() => _LoginState();
 }
 
-class _LoginState extends State<Login> {
-  var args;
-  var _toggle = true;
-  var icon = Icons.lock;
-
-  TextEditingController email = TextEditingController();
-  var senha = TextEditingController();
-  var userController = new UserController();
-
-  FlutterSecureStorage storage = FlutterSecureStorage();
-  GetIt it = GetIt.instance;
-  var value = 0.0;
-
-  @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-
-    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
-        statusBarBrightness: Brightness.light,
-        statusBarIconBrightness: Brightness.light));
-  }
-
-  login() async {
-    if (email.text.contains("@") && senha.text.length > 5) {
-      setState(() {
-        value = null;
-      });
-      var user = await userController.login(email.text, senha.text);
-
-      if (user == null) {
-        var token = await storage.read(key: "token");
-        it.registerSingleton(new ConnectionManager(token));
-        Navigator.of(context).pushReplacementNamed("inativo");
-        return;
-      }
-      if (user == false) {
-        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-            content: Text(
-              "Dados Incorretos!",
-              style: TextStyle(color: Colors.white),
-            ),
-            backgroundColor: Colors.red));
-      } else {
-        var token = await storage.read(key: "token");
-        //it.registerSingleton(new ModelUser(token));
-        var type = await storage.read(key: "type");
-        it.registerSingleton(new ConnectionManager(token));
-
-        var registro = await storage.read(key: "registro");
-        if (registro == null && type == "gerente") {
-          Navigator.of(context).pushReplacementNamed("precadastro");
-          return;
-        }
-        if (type == "admin" || type == "gerente")
-          Navigator.of(context).pushReplacementNamed("painel");
-        else if (type == "garcom")
-          Navigator.of(context).pushReplacementNamed("home");
-        else if (type == "cozinha")
-          Navigator.of(context).pushReplacementNamed("cozinha");
-        else if (type == "user")
-          Navigator.of(context).pushReplacementNamed("home_user");
-        else if (type == "entregador")
-          Navigator.of(context).pushReplacementNamed("entregador");
-      }
-      setState(() {
-        value = 0.0;
-      });
-    } else {
-      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-          content:
-              Text("Preencha os dados!", style: TextStyle(color: Colors.white)),
-          backgroundColor: Colors.orange));
-    }
-  }
-
+class _LoginState extends LoginModel {
   @override
   Widget build(BuildContext context) {
     SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
-    args = ModalRoute.of(context).settings.arguments;
+    args = ModalRoute.of(context)!.settings.arguments;
     var size = MediaQuery.of(context).size;
     return Scaffold(
       resizeToAvoidBottomInset: false,
@@ -162,17 +88,16 @@ class _LoginState extends State<Login> {
                           TextFormField(
                             controller: senha,
                             keyboardType: TextInputType.visiblePassword,
-                            obscureText: _toggle,
+                            obscureText: toggle,
                             style: TextStyle(),
                             decoration: InputDecoration(
                                 suffixIcon: GestureDetector(
                                   child: Icon(icon),
                                   onTap: () {
                                     setState(() {
-                                      _toggle = !_toggle;
-                                      icon = _toggle
-                                          ? Icons.lock
-                                          : Icons.lock_open;
+                                      toggle = !toggle;
+                                      icon =
+                                          toggle ? Icons.lock : Icons.lock_open;
                                     });
                                   },
                                 ),

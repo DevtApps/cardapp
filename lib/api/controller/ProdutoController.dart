@@ -16,7 +16,7 @@ class ProdutoController {
     return await storage.read(key: "token");
   }
 
-  save(nome, desc, preco, Categoria categoria, image, Produto produto) async {
+  save(nome, desc, preco, Categoria categoria, image, Produto? produto) async {
     try {
       if (produto != null) {
         Response response = await http.patch(Uri.parse(host), body: {
