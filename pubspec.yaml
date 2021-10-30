@@ -9,7 +9,7 @@ dependencies:
   flutter:
     sdk: flutter
   http: ^0.13.3
-  flutter_secure_storage: ^4.2.1
+  flutter_secure_storage: ^5.0.0-beta.5
   flutter_staggered_grid_view: ^0.4.0
   firebase_analytics: ^8.3.1
   firebase_storage: ^10.0.3
@@ -29,8 +29,8 @@ dependencies:
   geolocator: ^7.6.0
   google_maps_flutter: ^2.0.8
   google_place: ^0.4.3
-  
-  stripe_payment: ^1.1.4
+  pay: ^1.0.5
+  flutter_stripe: ^1.2.0
   mask_text_input_formatter: ^2.0.0
   flutter_svg: ^0.22.0
   flutter_signin_button: ^2.0.0

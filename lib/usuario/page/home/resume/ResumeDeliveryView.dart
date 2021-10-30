@@ -3,8 +3,7 @@ import 'package:cardapio/usuario/model/PedidoDelivery.dart';
 import 'package:cardapio/usuario/page/home/results/PaymentSuccess.dart';
 import 'package:cardapio/usuario/page/home/resume/ResumeDeliveryModel.dart';
 import 'package:flutter/material.dart';
-import 'package:stripe_payment/stripe_payment.dart';
-
+import 'package:flutter_stripe/flutter_stripe.dart' as stripe;
 import 'ResumeArgs.dart';
 
 class ResumeDeliveryView extends StatefulWidget {
@@ -140,7 +139,7 @@ class _ResumeDeliveryViewState extends ResumeDeliveryModel {
                               children: [
                                 if (cardToken != null)
                                   Image.asset(
-                                    cardToken is Token
+                                    !cardToken is stripe.PaymentMethod
                                         ? "assets/images/gpay.png"
                                         : "assets/images/credit-card.png",
                                     width: size.width * 0.11,

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_masked_text/flutter_masked_text.dart';
-import 'package:stripe_payment/stripe_payment.dart';
 
 class CardFormView extends StatefulWidget {
   @override

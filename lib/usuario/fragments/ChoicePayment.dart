@@ -2,9 +2,6 @@ import 'dart:async';
 
 import 'package:cardapio/api/controller/PaymentController.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/parser.dart';
-import 'package:flutter_svg/svg.dart';
-import 'package:stripe_payment/stripe_payment.dart';
 
 class ChoicePayment extends StatefulWidget {
   @override
@@ -14,14 +11,7 @@ class ChoicePayment extends StatefulWidget {
 class _ChoicePaymentState extends State<ChoicePayment> {
   Future<bool> checkGoogleAvaiable() async {
     try {
-      bool deviceSupportNativePay =
-          await (StripePayment.deviceSupportsNativePay() as FutureOr<bool>);
-      bool? isNativeReady = await StripePayment.canMakeNativePayPayments(
-          ['american_express', 'visa', 'maestro', 'master_card']);
-      if (deviceSupportNativePay && isNativeReady!)
-        return true;
-      else
-        return false;
+      return true;
     } catch (e) {
       return false;
     }

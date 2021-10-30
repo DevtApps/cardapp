@@ -9,8 +9,8 @@ import 'package:cardapio/usuario/page/home/perfil/endereco/model/Endereco.dart';
 import 'package:flutter/material.dart';
 
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:http/http.dart';
-import 'package:stripe_payment/stripe_payment.dart';
 
 class PaymentController with UserStateModel {
   DeliveryController deliveryController = DeliveryController();
@@ -34,7 +34,7 @@ class PaymentController with UserStateModel {
     try {
       String? token = "";
       String? payment_id = "";
-      if (cardToken is Token)
+      if (!cardToken is PaymentMethod)
         token = cardToken.tokenId;
       else {
         payment_id = cardToken.id;
@@ -113,9 +113,9 @@ class PaymentController with UserStateModel {
   }
 
   createPaymentCard() async {
-    await StripePayment.paymentRequestWithCardForm(
-      CardFormPaymentRequest(),
-    ).then((PaymentMethod paymentMethod) {
+    await Stripe.instance
+        .createPaymentMethod(PaymentMethodParams.card())
+        .then((PaymentMethod paymentMethod) {
       print(paymentMethod.id);
       return paymentMethod;
     }).catchError((e) {
@@ -123,21 +123,16 @@ class PaymentController with UserStateModel {
     });
   }
 
-  Future<Token> createPaymentMethodNative(pedidos) async {
+  Future<void> createPaymentMethodNative(pedidos) async {
     //StripePayment.setStripeAccount(null);
-    List<ApplePayItem> apple = [];
 
     var amount = 0.0;
     for (var pedido in pedidos) {
       amount += (pedido.quantidade * pedido.produto.preco);
     }
 
-    apple.add(ApplePayItem(label: "Pedidos", amount: amount.toString()));
-    apple.add(ApplePayItem(label: "Tax. Entrega", amount: 3.0.toString()));
-    apple.add(ApplePayItem(label: "Total", amount: (amount + 3.0).toString()));
-
     amount += 3.0;
-
+/*
     Token token = await StripePayment.paymentRequestWithNativePay(
       androidPayOptions: AndroidPayPaymentRequest(
           currencyCode: "BRL", totalPrice: amount.toString()),
@@ -146,5 +141,6 @@ class PaymentController with UserStateModel {
     );
 
     return token;
+    */
   }
 }

@@ -16,12 +16,12 @@ import 'package:firebase_analytics/observer.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:flutter_stripe/flutter_stripe.dart';
 
 import 'package:get_it/get_it.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:intl/intl.dart';
 import 'package:intl/locale.dart';
-import 'package:stripe_payment/stripe_payment.dart';
 
 import 'login/LoginView.dart';
 import 'login/Registro.dart';
@@ -31,9 +31,14 @@ import 'restaurante/page/home/Home.dart';
 import 'restaurante/page/manager/Relatorio.dart';
 import 'restaurante/page/painel/Painel.dart';
 
-void main() {
+void main() async {
   Intl.defaultLocale = "pt_BR";
 
+  Stripe.publishableKey = "";
+  Stripe.merchantIdentifier = 'MerchantIdentifier';
+  Stripe.urlScheme = 'flutterstripe';
+
+  await Stripe.instance.applySettings();
   runApp(
     MyApp(),
   );
@@ -97,13 +102,7 @@ class _LandingState extends State<Landing> {
         "pk_live_51IdJOZEEmyOoEDXUZ3xQ1Eu93KJ8LJKaJaKVHWEYgnytmls35WwBtuqvYYvkA2aBBtfrVuRSmwyf4hI9WifKz1Hh002UgdWhHH";
     var DEV =
         "pk_test_51IdJOZEEmyOoEDXUigX8RCUCS7YMBrVXdporbn5dIbKEWw2DYpvBuw7iKrZUCM9pqGA3HTRTqBZQfNupW2tEhmea00knFXnKHM";
-    StripePayment.setOptions(
-      StripeOptions(
-          publishableKey: DEV, // add you key as per Stripe dashboard
-          androidPayMode: 'test'
-          //androidPayMode: 'production',
-          ),
-    );
+
     Future.delayed(Duration(seconds: 1), () {
       login();
     });

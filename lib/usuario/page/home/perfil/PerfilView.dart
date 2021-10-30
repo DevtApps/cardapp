@@ -112,7 +112,7 @@ class _PerfilViewState extends PerfilModel {
                         style: TextStyle(color: Colors.white),
                       ),
                       onTap: () async {
-                        await storage.deleteAll();
+                        // await storage.deleteAll();
                         try {
                           it<ConnectionManager>().close();
                           await it.unregister<ConnectionManager>();

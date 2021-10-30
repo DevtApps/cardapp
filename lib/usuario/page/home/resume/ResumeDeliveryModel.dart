@@ -1,3 +1,4 @@
+import 'package:cardapio/fastfire/models/UserStateModel.dart';
 import 'package:cardapio/usuario/fragments/ChoiceAddress.dart';
 import 'package:cardapio/usuario/fragments/ChoicePayment.dart';
 import 'package:cardapio/usuario/model/PedidoDelivery.dart';
@@ -5,10 +6,11 @@ import 'package:cardapio/usuario/page/home/perfil/endereco/model/Endereco.dart';
 import 'package:cardapio/usuario/page/home/resume/ResumeArgs.dart';
 import 'package:cardapio/usuario/page/home/resume/ResumeDeliveryView.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:intl/intl.dart';
-import 'package:stripe_payment/stripe_payment.dart';
 
-abstract class ResumeDeliveryModel extends State<ResumeDeliveryView> {
+abstract class ResumeDeliveryModel extends State<ResumeDeliveryView>
+    with UserStateModel {
   ResumeArgs? args;
   NumberFormat currency = NumberFormat.currency(symbol: "R\$", locale: "pt_BR");
   var tax = 3.0;
@@ -46,11 +48,12 @@ abstract class ResumeDeliveryModel extends State<ResumeDeliveryView> {
         switch (type) {
           case 0:
             {
-              Token token = await createPaymentMethodNative();
+              /* Token token = await createPaymentMethodNative();
               if (token != null)
                 setState(() {
                   cardToken = token;
                 });
+                */
 
               break;
             }
@@ -70,9 +73,10 @@ abstract class ResumeDeliveryModel extends State<ResumeDeliveryView> {
     }
   }
 
-  Future<Token> createPaymentMethodNative() async {
+  Future<void> createPaymentMethodNative() async {
     // StripePayment.setStripeAccount("");
 
+/*
     var amount = 0.0;
     for (var pedido in args!.pedidos) {
       amount += (pedido.quantidade! * pedido.produto!.preco!);
@@ -86,12 +90,13 @@ abstract class ResumeDeliveryModel extends State<ResumeDeliveryView> {
     );
 
     return token;
+    */
   }
 
   createPaymentCard() async {
-    PaymentMethod method = await StripePayment.paymentRequestWithCardForm(
-      CardFormPaymentRequest(),
-    );
+    PaymentMethod method = await Stripe.instance.createPaymentMethod(
+        PaymentMethodParams.card(
+            billingDetails: BillingDetails(email: auth.currentUser!.email)));
 
     return method;
   }
